@@ -1,15 +1,13 @@
 apt-get install cloud-init
 
-wget -q https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img
-
 wget -q https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 
-qemu-img resize noble-server-cloudimg-amd64.img 64G
-qm create 9000 --memory 2048 --net0 virtio,bridge=vmbr0 --scsihw virtio-scsi-pci
-qm importdisk 9000 noble-server-cloudimg-amd64.img HDD
-qm set 9000 --scsihw virtio-scsi-pci --virtio0 HDD:vm-9000-disk-0,discard=on
-qm set 9000 --ide2 local-lvm:cloudinit
-qm set 9000 --boot order=virtio0
+qm create 8000 --memory 2048 --core 2 --name ubuntu-cloud --net0 virtio,bridge=vmbr0
+qm importdisk 8000 jammy-server-cloudimg-amd64.img HDD
+qm set 8000 --scsihw virtio-scsi-pci --scsi0 local:vm-9000-disk-0
+qm set 8000 --ide2 local-lvm:cloudinit
+qm set 8000 --boot c --bootdisk scsi0
+qm set 8000 --serial0 socket --vga serial0
 
 
 
@@ -24,5 +22,10 @@ runcmd:
     - reboot
 ---
 
-qm set 9000 --cicustom "vendor=local:snippets/vendor.yaml"
-qm template 9000
+qm set 8000 --cicustom "vendor=local:snippets/vendor.yaml"
+qm template 8000
+
+
+sudo rm -f /etc/machine-id
+sudo rm -f /var/lib/dbus/machine-id
+sudo systemd-machine-id-setup
