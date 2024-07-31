@@ -12,14 +12,14 @@ qm set 8000 --serial0 socket --vga serial0
 
 
 ---
-/var/lib/vz/snippets/vendor.yaml
-
+cat << EOF | sudo tee /var/lib/vz/snippets/vendor.yaml
 #cloud-config
 runcmd:
     - apt update
     - apt install -y qemu-guest-agent
     - systemctl start qemu-guest-agent
     - reboot
+EOF
 ---
 
 qm set 8000 --cicustom "vendor=local:snippets/vendor.yaml"
