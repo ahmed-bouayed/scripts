@@ -2,7 +2,7 @@ apt-get install cloud-init
 
 wget -q https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 
-qemu-img jammy-server-cloudimg-amd64.img 32G
+qemu-img resize jammy-server-cloudimg-amd64.img 32G
 
 qm create 8000 --memory 2048 --core 2 --name ubuntu-cloud --net0 virtio,bridge=vmbr0
 qm importdisk 8000 jammy-server-cloudimg-amd64.img local-lvm
