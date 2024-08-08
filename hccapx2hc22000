@@ -1,2 +1,3 @@
-hcxhash2cap  --hccapx=your_hccapx_file
+hcxhash2cap -c test.cap  --hccapx=your_hccapx_file
 hcxpcapngtool -o test.hc22000 *.cap
+./hashcat.exe -d 2 -a 3 -w 4 -m 22000 "C:\Users\ahmed\Downloads\hashcat-6.2.6\converted\test.hc22000" ?d?d?d?d?d?d?d?d
