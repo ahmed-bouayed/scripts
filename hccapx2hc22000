@@ -1,0 +1,2 @@
+hcxhash2cap  --hccapx=your_hccapx_file
+hcxpcapngtool -o test.hc22000 *.cap
