@@ -1,0 +1,42 @@
+sudo su -
+apt update
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.28 INSTALL_RKE2_TYPE=server sh -  
+systemctl enable --now rke2-server.service
+ln -s $(find /var/lib/rancher/rke2/data/ -name kubectl) /usr/local/bin/kubectl
+echo "export KUBECONFIG=/etc/rancher/rke2/rke2.yaml PATH=$PATH:/usr/local/bin/:/var/lib/rancher/rke2/bin/" >> ~/.bashrc
+source ~/.bashrc
+kubectl get node
+
+curl -#L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+helm repo add jetstack https://charts.jetstack.io
+
+helm upgrade -i cert-manager jetstack/cert-manager -n cert-manager --create-namespace --set crds.enabled=true
+
+helm upgrade -i rancher rancher-latest/rancher --create-namespace --namespace cattle-system --set hostname=rancher.dockr.life --set bootstrapPassword=bootStrapAllTheThings --set replicas=1
+
+### agent
+# save this for rancher2 and rancher3
+cat /var/lib/rancher/rke2/server/node-token
+
+# we can export the rancher1 IP from the first server.
+export RANCHER1_IP=192.168.1.1  # change this!
+
+# and we can export the token from rancher1.
+export TOKEN=something_magical # change this as well.
+
+# we add INSTALL_RKE2_TYPE=agent
+curl -sfL https://get.rke2.io | INSTALL_RKE2_CHANNEL=v1.28 INSTALL_RKE2_TYPE=agent sh -  
+
+# create config file
+mkdir -p /etc/rancher/rke2/ 
+
+# change the ip to reflect your rancher1 ip
+echo "server: https://$RANCHER1_IP:9345" > /etc/rancher/rke2/config.yaml
+
+# change the Token to the one from rancher1 /var/lib/rancher/rke2/server/node-token 
+echo "token: $TOKEN" >> /etc/rancher/rke2/config.yaml
+
+# enable and start
+systemctl enable --now rke2-agent.service
