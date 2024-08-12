@@ -21,7 +21,7 @@ helm install cert-manager jetstack/cert-manager \
 
 helm install rancher rancher-latest/rancher \
   --namespace cattle-system \
-  --set hostname=rancher.192.168.10.109.nip.io \
+  --set hostname=rancher.192.168.10.102.nip.io \
   --set replicas=1 \
   --set bootstrapPassword=admin
 
