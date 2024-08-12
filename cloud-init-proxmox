@@ -34,3 +34,10 @@ reboot
 sudo rm -f /etc/machine-id
 sudo rm -f /var/lib/dbus/machine-id
 sudo systemd-machine-id-setup
+reboot
+
+sudo apt update
+sudo apt install cloud-init
+
+config:
+/etc/cloud/cloud.cfg
