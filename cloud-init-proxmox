@@ -27,9 +27,6 @@ EOF
 apt update
 apt install -y qemu-guest-agent
 systemctl start qemu-guest-agent
-reboot
-
-
 
 sudo rm -f /etc/machine-id
 sudo rm -f /var/lib/dbus/machine-id
