@@ -1,5 +1,8 @@
 curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=v1.28.12+k3s1 sh -
 
+mkdir -p ~/.kube
+cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+
 sudo systemctl status k3s
 sudo systemctl start k3s
 kubectl cluster-info

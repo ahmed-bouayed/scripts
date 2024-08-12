@@ -1,13 +1,18 @@
 curl -#L https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
 helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
-kubectl create namespace cattle-system
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.2/cert-manager.crds.yaml
-
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
 
+kubectl create namespace cattle-system
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.15.2/cert-manager.crds.yaml
+
+
+
+nano ~/.bashrc
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+source ~/.bashrc
+
 
 helm install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
@@ -16,6 +21,8 @@ helm install cert-manager jetstack/cert-manager \
 
 helm install rancher rancher-latest/rancher \
   --namespace cattle-system \
-  --set hostname=rancher.192.168.10.10.nip.io \
+  --set hostname=rancher.192.168.10.109.nip.io \
   --set replicas=1 \
   --set bootstrapPassword=admin
+
+kubectl get pod -n cattle-system
