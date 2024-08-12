@@ -24,6 +24,10 @@ runcmd:
 EOF
 ---
 
+apt update
+apt install -y qemu-guest-agent
+systemctl start qemu-guest-agent
+reboot
 
 
 
