@@ -28,9 +28,9 @@ apt update
 apt install -y qemu-guest-agent
 systemctl start qemu-guest-agent
 
-sudo rm -f /etc/machine-id
-sudo rm -f /var/lib/dbus/machine-id
-sudo systemd-machine-id-setup
+rm -f /etc/machine-id
+rm -f /var/lib/dbus/machine-id
+systemd-machine-id-setup
 reboot
 
 sudo apt update
