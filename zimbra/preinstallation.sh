@@ -14,6 +14,8 @@ echo -e "[INFO] : Configuring Firewall"
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
 
+sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+
 ## Input required variables
 echo ""
 read -p "Input Zimbra Base Domain. E.g example.com : " ZIMBRA_DOMAIN

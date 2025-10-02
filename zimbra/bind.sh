@@ -19,6 +19,8 @@ echo ""
 read -p "Input Zimbra Base Domain. E.g example.com : " ZIMBRA_DOMAIN
 read -p "Input Zimbra Mail Server hostname (first part of FQDN). E.g mail : " ZIMBRA_HOSTNAME
 read -p "Input Zimbra Server IP Address : " ZIMBRA_SERVERIP
+read -p "Input Zimbra Server Gateway : " ZIMBRA_GATEWAY
+
 echo ""
 echo -e "[INFO] : Configuring DNS Server"
 sleep 3
@@ -73,6 +75,7 @@ EOF
 sudo systemctl enable named
 sudo systemctl restart named
 
+nmcli con mod eth0 ipv4.method manual ipv4.addresses $ZIMBRA_SERVERIP/24 ipv4.gateway $ZIMBRA_GATEWAY ipv4.dns "127.0.0.1"
 # Test DNS setup
 nslookup $ZIMBRA_HOSTNAME.$ZIMBRA_DOMAIN
 dig $ZIMBRA_DOMAIN mx
